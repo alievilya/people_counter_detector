@@ -2,6 +2,7 @@ import tensorflow as tf
 from draw import select_object, draw_image
 import cv2
 from models import Yolov4
+from os.path import join
 
 
 def check_gpu():
@@ -62,11 +63,12 @@ def same_id(previous_id, current_id):
 
 if __name__ == "__main__":
     output_format = 'mp4'
-    video_name = '2.avi'
+    video_name = '1.avi'
+    video_path = join('data_files', video_name)
     output_name = 'save_data/out_' + video_name[0:-3] + output_format
+    initialize_door_by_yourself = False
 
     is_first_frame = True
-    initialize_door_by_yourself = False
     num_frame = 0
     counter_detection = 0
     person_id = 0
@@ -83,7 +85,7 @@ if __name__ == "__main__":
     model = Yolov4(weight_path='yolo4_config/yolov4.weights',
                    class_name_path='yolo4_config/coco_classes.txt')
 
-    videofile = cv2.VideoCapture(video_name)
+    videofile = cv2.VideoCapture(video_path)
     fps = videofile.get(cv2.CAP_PROP_FPS)
     fourcc = cv2.VideoWriter_fourcc(*'MP4V')
     output_video = cv2.VideoWriter(output_name, fourcc, fps, (640, 480))
