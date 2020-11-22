@@ -67,16 +67,6 @@ if __name__ == "__main__":
     output_format = 'mp4'
     video_name = '2.avi'
     output_name = 'save_data/out_' + video_name[0:-3] + output_format
-    check_gpu()
-
-    model = Yolov4(weight_path='yolo4_config/yolov4.weights',
-                   class_name_path='yolo4_config/coco_classes.txt')
-
-    videofile = cv2.VideoCapture(video_name)
-
-    fps = videofile.get(cv2.CAP_PROP_FPS)
-    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-    output_video = cv2.VideoWriter(output_name, fourcc, fps, (640, 480))
 
     is_first_frame = True
     initialize_door_by_yourself = False
@@ -92,12 +82,21 @@ if __name__ == "__main__":
     people_actions['in'] = 0
     people_actions['out'] = 0
 
+    check_gpu()
+    model = Yolov4(weight_path='yolo4_config/yolov4.weights',
+                   class_name_path='yolo4_config/coco_classes.txt')
+
+    videofile = cv2.VideoCapture(video_name)
+    fps = videofile.get(cv2.CAP_PROP_FPS)
+    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
+    output_video = cv2.VideoWriter(output_name, fourcc, fps, (640, 480))
     rr, first_frame = videofile.read()
 
     if initialize_door_by_yourself:
         door_array = select_object(first_frame)[0]
     else:
         door_array = [361, 20, 507, 352]
+
     while rr:
         ret, frame = videofile.read()
         if not ret:

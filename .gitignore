@@ -1,10 +1,8 @@
 yolov4.weights
 .idea
 __pycache__/
-*.h5
 *.weights
 .ipynb_checkpoints
 *.
-dataset/
 test_nb
-yolo4_config/
+
